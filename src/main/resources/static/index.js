@@ -3,7 +3,7 @@ var map;
 window.onload = function (e) {
 
 
-    mapboxgl.accessToken = 'pk.eyJ1IjoidXRhaGVtcmUiLCJhIjoiY2lmM3RxcWp6MDBtM3RsbHlvZTRxd2lvaiJ9._01IsYjztRQ0DhF_lt5y2A';
+    mapboxgl.accessToken = 'YOUR_ACCESS_TOKEN';
     map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
