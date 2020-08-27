@@ -140,15 +140,11 @@ function addPolygonLayerToMap() {
 
         this.map.addLayer(polygonLayer);
         
-        map.on('mouseenter', 'polygonLayerId', function (e) {
-            popup = new mapboxgl.Popup({closeButton: false})
+        map.on('click', 'polygonLayerId', function (e) {
+            new mapboxgl.Popup()
                     .setLngLat(e.lngLat)
-                    .setHTML(e.features[0].properties.il)
+                    .setHTML(e.features[0].properties.il + " : " + e.features[0].properties.nufus)
                     .addTo(map);
-        });
-        
-        map.on('mouseleave', 'polygonLayerId', function (e) {
-            popup.remove();
         });
     });
 }
