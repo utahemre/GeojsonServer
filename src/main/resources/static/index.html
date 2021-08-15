@@ -1,18 +1,41 @@
-<html style="width: 100%;height: 100%">
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html style="height: 100%;width: 100%">
     <head>
-        <title>GIS is everywhere</title>
-
-        <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
-        <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
-        
-        <script src="index.js"></script>
-
-
-
+        <title>GIS</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+        <script src='https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.css' rel='stylesheet' />
+        <script src="index.js"></script>
+
     </head>
-    <body style="width: 100%; height: 100%; margin:0">
-        <div id="map" style="width: 100%;height: 100%"></div>
+    <body style="height: 100%;width: 100%;margin: 0;">
+        <div id="map" style="height: 100%;width: 100%;">
+            <button style="position: relative;z-index: 999" onclick="addPointLayerToMap();">Add Point Layer</button>
+            <button style="position: relative;z-index: 999" onclick="addLineLayerToMap();">Add Line Layer</button>
+            <button style="position: relative;z-index: 999" onclick="addPolygonLayerToMap();">Add Polygon Layer</button>
+            <button style="position: relative;z-index: 999" onclick="addPopulationPolygonLayerToMap();">Add Population Polygon Layer</button>
+            <button style="position: relative;z-index: 999" onclick="addPopulationPolygon3DLayerToMap();">Add Population Polygon 3D Layer</button>
+
+            <button style="position: relative;z-index: 999;float: right" onclick="changeStyle('satellite-v9');">Satellite Style</button>
+            <button style="position: relative;z-index: 999;float: right" onclick="changeStyle('streets-v11');">Streets Style</button>
+            <button style="position: relative;z-index: 999;float: right" onclick="changeStyle('dark-v10');">Dark Style</button>
+            <button style="position: relative;z-index: 999;float: right" onclick="changeStyle('light-v10');">Light Style</button>
+
+            <p>
+
+                <button style="position: relative;z-index: 999" onclick="removePointLayerFromMap();">Remove Point Layer</button>
+                <button style="position: relative;z-index: 999" onclick="removeLineLayerFromMap();">Remove Line Layer</button>
+                <button style="position: relative;z-index: 999" onclick="removePolygonLayerFromMap();">Remove Polygon Layer</button>
+                <button style="position: relative;z-index: 999" onclick="removePopulationPolygonLayerFromMap();">Remove Population Polygon Layer</button>
+                <button style="position: relative;z-index: 999" onclick="removePopulationPolygon3DLayerFromMap();">Remove Population Polygon 3D Layer</button>
+        </div>
     </body>
 </html>
