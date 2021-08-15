@@ -8,14 +8,14 @@ var map;
 
 window.onload = function (e) {
 
-    mapboxgl.accessToken = 'YOUR ACCESS TOKEN';
+    mapboxgl.accessToken = 'pk.eyJ1IjoidXRhaGVtcmUiLCJhIjoiY2lmM3RxcWp6MDBtM3RsbHlvZTRxd2lvaiJ9._01IsYjztRQ0DhF_lt5y2A';
     map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/outdoors-v11', // stylesheet location
         center: [35, 40], // starting position [lng, lat]
         zoom: 5 // starting zoom
     });
-    
+
 };
 
 function getGeojson(query, _callback) {
@@ -48,7 +48,7 @@ function addPointLayerToMap() {
                     'source': "pointSourceId",
                     'paint': {
                         'circle-radius': 3,
-                        'circle-color': '#FF00FF'
+                        'circle-color': '#FF0000'
                     },
                     'minZoom': 5,
                     'maxZoom': 15
@@ -56,21 +56,19 @@ function addPointLayerToMap() {
                 };
 
         this.map.addLayer(pointLayer);
-        
-        var popup;
-        
-        map.on('mousemove', 'pointLayerId', function (e) {
-            popup = new mapboxgl.Popup({closeButton: false})
+
+        map.on('click', 'pointLayerId', function (e) {
+
+            const popup = new mapboxgl.Popup({closeButton: false})
                     .setLngLat(e.lngLat)
                     .setHTML(e.features[0].properties.tipi)
                     .addTo(map);
         });
-        
-        map.on('mouseleave', 'pointLayerId', function (e) {
-            popup.remove();
-        });
+
+
     });
-};
+}
+;
 
 function addLineLayerToMap() {
 
@@ -96,19 +94,15 @@ function addLineLayerToMap() {
                 };
 
         this.map.addLayer(lineLayer);
-        
-        
-        map.on('mousemove', 'lineLayerId', function (e) {
+
+
+        map.on('click', 'lineLayerId', function (e) {
             popup = new mapboxgl.Popup({closeButton: false})
                     .setLngLat(e.lngLat)
                     .setHTML(e.features[0].properties.adi)
                     .addTo(map);
         });
-        
-        map.on('mouseleave', 'lineLayerId', function (e) {
-            popup.remove();
-        });
-        
+
     });
 }
 ;
@@ -129,8 +123,14 @@ function addPolygonLayerToMap() {
                     'source': "polygonSourceId",
                     'paint': {
                         'fill-opacity': 0.3,
-                        'fill-color': '#FF00FF',
-                        'fill-outline-color': '#000000'
+                        'fill-outline-color': '#000000',
+                        'fill-color': [
+                            'case',
+                            ['boolean', ['feature-state', 'hover'], false],
+                            '#00FF00',
+                            '#0000FF'
+                        ]
+
 
                     },
                     'minZoom': 5,
@@ -139,12 +139,21 @@ function addPolygonLayerToMap() {
                 };
 
         this.map.addLayer(polygonLayer);
-        
+
         map.on('click', 'polygonLayerId', function (e) {
-            new mapboxgl.Popup()
-                    .setLngLat(e.lngLat)
-                    .setHTML(e.features[0].properties.il + " : " + e.features[0].properties.nufus)
-                    .addTo(map);
+            var featureId = e.features[0].id;
+
+            if (e.features[0].state.hover) {
+                map.setFeatureState(
+                        {source: 'polygonSourceId', id: featureId},
+                        {hover: false}
+                );
+            } else {
+                map.setFeatureState(
+                        {source: 'polygonSourceId', id: featureId},
+                        {hover: true}
+                );
+            }
         });
     });
 }
@@ -240,7 +249,7 @@ function addPopulationPolygon3DLayerToMap() {
                                     40000,
                                     5000000,
                                     80000
-                                ],        
+                                ],
 
                     },
                     'minZoom': 5,
@@ -250,7 +259,7 @@ function addPopulationPolygon3DLayerToMap() {
 
         this.map.addLayer(polygonLayer);
 
-        map.on('click', 'populationPolygonLayerId', function (e) {
+        map.on('click', 'populationPolygon3DLayerId', function (e) {
             new mapboxgl.Popup()
                     .setLngLat(e.lngLat)
                     .setHTML(e.features[0].properties.il + " : " + e.features[0].properties.nufus)
@@ -286,4 +295,20 @@ function removePopulationPolygon3DLayerFromMap() {
 
 function changeStyle(layerId) {
     map.setStyle('mapbox://styles/mapbox/' + layerId);
+}
+
+function changeCircleLayerColor() {
+    var color = document.getElementById("color").value;
+
+    if (color) {
+        map.setPaintProperty('pointLayerId', 'circle-color', color);
+    }
+}
+
+function changeLineLayerColor() {
+    var color = document.getElementById("color").value;
+
+    if (color) {
+        map.setPaintProperty('lineLayerId', 'line-color', color);
+    }
 }
