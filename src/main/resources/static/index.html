@@ -16,8 +16,10 @@ and open the template in the editor.
         <script src="index.js"></script>
 
     </head>
-    <body style="height: 100%;width: 100%;margin: 0;">
-        <div id="map" style="height: 100%;width: 100%;">
+    <body style="height: 100%;width: 100%;margin: 0;padding: 0;">
+        <div id="map" style="height: 100%;width: 100%;position: absolute;"></div>
+
+        <div id="buttons">
             <button style="position: relative;z-index: 999" onclick="addPointLayerToMap();">Add Point Layer</button>
             <button style="position: relative;z-index: 999" onclick="addLineLayerToMap();">Add Line Layer</button>
             <button style="position: relative;z-index: 999" onclick="addPolygonLayerToMap();">Add Polygon Layer</button>
@@ -36,6 +38,14 @@ and open the template in the editor.
                 <button style="position: relative;z-index: 999" onclick="removePolygonLayerFromMap();">Remove Polygon Layer</button>
                 <button style="position: relative;z-index: 999" onclick="removePopulationPolygonLayerFromMap();">Remove Population Polygon Layer</button>
                 <button style="position: relative;z-index: 999" onclick="removePopulationPolygon3DLayerFromMap();">Remove Population Polygon 3D Layer</button>
+
+            <p>
+
+                <input style="position: relative;z-index: 999" type="text" id="color">
+                <button style="position: relative;z-index: 999" onclick="changeCircleLayerColor();">Change Circle Color</button>
+                <button style="position: relative;z-index: 999" onclick="changeLineLayerColor();">Change Line Color</button>
+                
+            </p>
         </div>
     </body>
 </html>
