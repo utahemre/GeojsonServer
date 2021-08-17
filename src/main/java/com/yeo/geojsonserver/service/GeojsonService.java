@@ -20,8 +20,16 @@ public class GeojsonService {
     
     @Autowired GeojsonDao geojsonDao;
     
-    public String getGeojson(String query){
-        return this.geojsonDao.getGeojson(query);
+    public String getPoints(){
+        return this.geojsonDao.getPoints();
+    }
+    
+    public String getLinestrings(){
+        return this.geojsonDao.getLinestrings();
+    }
+    
+    public String getPolygons(){
+        return this.geojsonDao.getPolygons();
     }
     
 }
