@@ -15,17 +15,26 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class GeojsonDao {
-    
-    @Autowired JdbcTemplate jdbcTemplate;
-    
-    public String getGeojson(String query) {
-        
-        String geojsonTemplate = "SELECT jsonb_build_object('type', 'FeatureCollection', 'features', jsonb_agg(feature) "
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
+    static String geojsonTemplate = "SELECT jsonb_build_object('type', 'FeatureCollection', 'features', jsonb_agg(feature) "
                 + ") FROM (SELECT jsonb_build_object('type', 'Feature', 'id', id,"
                 + "'geometry', ST_AsGeoJSON(geom)::jsonb,'properties', to_jsonb(row) - 'geom'"
                 + ") AS feature FROM (%s) row) features";
-        
-           return jdbcTemplate.queryForObject(String.format(geojsonTemplate,query), String.class);
-        }
+
     
+    public String getPoints() {
+        return jdbcTemplate.queryForObject(String.format(geojsonTemplate, "select * from egitim_nokta"), String.class);
+    }
+    
+    public String getLinestrings() {
+        return jdbcTemplate.queryForObject(String.format(geojsonTemplate, "select * from egitim_cizgi"), String.class);
+    }
+    
+    public String getPolygons() {
+        return jdbcTemplate.queryForObject(String.format(geojsonTemplate, "select * from egitim_poligon"), String.class);
+    }
+
 }
