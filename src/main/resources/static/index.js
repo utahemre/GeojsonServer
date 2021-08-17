@@ -18,8 +18,8 @@ window.onload = function (e) {
 
 };
 
-function getGeojson(query, _callback) {
-    var url = "/geojsonserver/geojson/getByQuery?query=" + query;
+function getGeojson(service, _callback) {
+    var url = "/geojsonserver/geojson/" + service;
 
     fetch(url).then(res => res.json())
             .then((res) => {
@@ -34,7 +34,7 @@ function getGeojson(query, _callback) {
 
 function addPointLayerToMap() {
 
-    getGeojson("select * from egitim_nokta", (_result) => {
+    getGeojson("getPoints", (_result) => {
 
         map.addSource("pointSourceId", {
             'type': 'geojson',
@@ -72,7 +72,7 @@ function addPointLayerToMap() {
 
 function addLineLayerToMap() {
 
-    getGeojson("select * from egitim_cizgi", (_result) => {
+    getGeojson("getLinestrings", (_result) => {
 
         map.addSource("lineSourceId", {
             'type': 'geojson',
@@ -109,7 +109,7 @@ function addLineLayerToMap() {
 
 function addPolygonLayerToMap() {
 
-    getGeojson("select * from egitim_poligon", (_result) => {
+    getGeojson("getPolygons", (_result) => {
 
         map.addSource("polygonSourceId", {
             'type': 'geojson',
@@ -160,7 +160,7 @@ function addPolygonLayerToMap() {
 
 function addPopulationPolygonLayerToMap() {
 
-    getGeojson("select * from egitim_poligon", (_result) => {
+    getGeojson("getPolygons", (_result) => {
 
         map.addSource("populationPolygonSourceId", {
             'type': 'geojson',
@@ -208,7 +208,7 @@ function addPopulationPolygonLayerToMap() {
 
 function addPopulationPolygon3DLayerToMap() {
 
-    getGeojson("select * from egitim_poligon", (_result) => {
+    getGeojson("getPolygons", (_result) => {
 
         map.addSource("populationPolygon3DSourceId", {
             'type': 'geojson',
