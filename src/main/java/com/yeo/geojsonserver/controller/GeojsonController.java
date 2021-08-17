@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -24,9 +23,19 @@ public class GeojsonController {
     
     @Autowired GeojsonService geojsonService;
     
-    @RequestMapping(value = "/getByQuery", method = RequestMethod.GET)
-    public String getGeojson(@RequestParam("query") String query){
-        return this.geojsonService.getGeojson(query);
+    @RequestMapping(value = "/getPoints", method = RequestMethod.GET)
+    public String getPoints(){
+        return this.geojsonService.getPoints();
+    }
+    
+    @RequestMapping(value = "/getLinestrings", method = RequestMethod.GET)
+    public String getLinestrings(){
+        return this.geojsonService.getLinestrings();
+    }
+    
+    @RequestMapping(value = "/getPolygons", method = RequestMethod.GET)
+    public String getPolygons(){
+        return this.geojsonService.getPolygons();
     }
     
 }
