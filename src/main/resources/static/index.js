@@ -11,7 +11,7 @@ window.onload = function (e) {
     mapboxgl.accessToken = 'YOUR_ACCESS_TOKEN';
     map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/outdoors-v11', // stylesheet location
+        style: 'mapbox://styles/mapbox/dark-v10', // stylesheet location
         center: [35, 40], // starting position [lng, lat]
         zoom: 5 // starting zoom
     });
@@ -34,6 +34,7 @@ function getGeojson(service, _callback) {
 
 function addPointLayerToMap() {
 
+    //Example from getPolygonPoints getPointPolygons?city=Ankara
     getGeojson("getPoints", (_result) => {
 
         map.addSource("pointSourceId", {
