@@ -32,4 +32,8 @@ public class GeojsonService {
         return this.geojsonDao.getPolygons();
     }
     
+    public String getPointPolygons(String city){
+        return this.geojsonDao.getPointPolygons(city);
+    }
+    
 }
