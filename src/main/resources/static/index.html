@@ -9,10 +9,9 @@ and open the template in the editor.
         <title>GIS</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
         <script src='https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.js'></script>
         <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.css' rel='stylesheet' />
+        <script src='rainbowvis.js'></script>
         <script src="index.js"></script>
 
     </head>
@@ -44,6 +43,15 @@ and open the template in the editor.
                 <input style="position: relative;z-index: 999" type="text" id="color">
                 <button style="position: relative;z-index: 999" onclick="changeCircleLayerColor();">Change Circle Color</button>
                 <button style="position: relative;z-index: 999" onclick="changeLineLayerColor();">Change Line Color</button>
+                <input style="position: relative;z-index: 999" type="text" id="startColor">
+                <input style="position: relative;z-index: 999" type="text" id="endColor">
+                <button style="position: relative;z-index: 999" onclick="changePopulationPolygonLayerColor();">Change Population Color</button>
+                
+            <p>
+
+                <input style="position: relative;z-index: 999" type="text" id="filter">
+                <button style="position: relative;z-index: 999" onclick="addFilterToCircleLayer();">Add Filter To Circle Layer</button>
+                <button style="position: relative;z-index: 999" onclick="removeFilterFromCircleLayer();">Remove Filter From Circle Layer</button>
                 
             </p>
         </div>
