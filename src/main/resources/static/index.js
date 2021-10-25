@@ -8,7 +8,7 @@ var map;
 
 window.onload = function (e) {
 
-    mapboxgl.accessToken = 'YOUR_ACCESS_TOKEN';
+    mapboxgl.accessToken = 'pk.eyJ1IjoidXRhaGVtcmUiLCJhIjoiY2lmM3RxcWp6MDBtM3RsbHlvZTRxd2lvaiJ9._01IsYjztRQ0DhF_lt5y2A';
     map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/dark-v10', // stylesheet location
@@ -312,4 +312,35 @@ function changeLineLayerColor() {
     if (color) {
         map.setPaintProperty('lineLayerId', 'line-color', color);
     }
+}
+
+function addFilterToCircleLayer() {
+    map.setFilter('pointLayerId', ['==', 'il', document.getElementById("filter").value]);
+
+}
+
+function removeFilterFromCircleLayer() {
+    map.setFilter('pointLayerId', null);
+}
+
+function changePopulationPolygonLayerColor() {
+    let rainbow = new Rainbow();
+    rainbow.setNumberRange(1, 5);
+    rainbow.setSpectrum(document.getElementById("startColor").value, document.getElementById("endColor").value);
+
+    var fillColor = [
+        'step',
+        ['get', 'nufus'],
+        '#' + rainbow.colorAt(1),
+        500000,
+        '#' + rainbow.colorAt(2),
+        1000000,
+        '#' + rainbow.colorAt(3),
+        3000000,
+        '#' + rainbow.colorAt(4),
+        50000000,
+        '#' + rainbow.colorAt(5)
+    ];
+    
+    map.setPaintProperty('populationPolygonLayerId', 'fill-color', fillColor);
 }
