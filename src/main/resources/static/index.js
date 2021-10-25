@@ -8,7 +8,7 @@ var map;
 
 window.onload = function (e) {
 
-    mapboxgl.accessToken = 'YOUR ACCESS TOKEN';
+    mapboxgl.accessToken = 'pk.eyJ1IjoidXRhaGVtcmUiLCJhIjoiY2lmM3RxcWp6MDBtM3RsbHlvZTRxd2lvaiJ9._01IsYjztRQ0DhF_lt5y2A';
     map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/dark-v10', // stylesheet location
@@ -269,6 +269,26 @@ function addPopulationPolygon3DLayerToMap() {
     });
 }
 
+function addWmsLayerToMap() {
+    map.addSource("wmsSourceId", {
+        'type': 'raster',
+        'tileSize': 256,
+        'tiles': ['https://tucbs-public-api.csb.gov.tr/trk_srtm_wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&LAYERS=0&STYLES=default&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&BBOX={bbox-epsg-3857}']
+    });
+    var wmsLayer = {
+        'id': "wmsLayerId",
+        'type': 'raster',
+        'source': "wmsSourceId",
+        'paint': {
+            'raster-opacity': 0.5
+        },
+        'minZoom': 5,
+        'maxZoom': 15
+    }
+
+    this.map.addLayer(wmsLayer);
+}
+
 function removePointLayerFromMap() {
     map.removeLayer("pointLayerId");
     map.removeSource("pointSourceId");
@@ -294,13 +314,17 @@ function removePopulationPolygon3DLayerFromMap() {
     map.removeSource("populationPolygon3DSourceId");
 }
 
+function removeWmsLayerFromMap() {
+    map.removeLayer("wmsLayerId");
+    map.removeSource("wmsSourceId");
+}
+
 function changeStyle(layerId) {
     map.setStyle('mapbox://styles/mapbox/' + layerId);
 }
 
 function changeCircleLayerColor() {
     var color = document.getElementById("color").value;
-
     if (color) {
         map.setPaintProperty('pointLayerId', 'circle-color', color);
     }
@@ -308,7 +332,6 @@ function changeCircleLayerColor() {
 
 function changeLineLayerColor() {
     var color = document.getElementById("color").value;
-
     if (color) {
         map.setPaintProperty('lineLayerId', 'line-color', color);
     }
@@ -316,7 +339,6 @@ function changeLineLayerColor() {
 
 function addFilterToCircleLayer() {
     map.setFilter('pointLayerId', ['==', 'il', document.getElementById("filter").value]);
-
 }
 
 function removeFilterFromCircleLayer() {
@@ -327,7 +349,6 @@ function changePopulationPolygonLayerColor() {
     let rainbow = new Rainbow();
     rainbow.setNumberRange(1, 5);
     rainbow.setSpectrum(document.getElementById("startColor").value, document.getElementById("endColor").value);
-
     var fillColor = [
         'step',
         ['get', 'nufus'],
@@ -341,6 +362,5 @@ function changePopulationPolygonLayerColor() {
         50000000,
         '#' + rainbow.colorAt(5)
     ];
-    
     map.setPaintProperty('populationPolygonLayerId', 'fill-color', fillColor);
 }
