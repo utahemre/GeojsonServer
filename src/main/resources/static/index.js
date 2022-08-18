@@ -6,12 +6,13 @@
 
 var map;
 
+var mapTilerKey = 'YOUR_MAPTILER_KEY';
+
 window.onload = function (e) {
 
-    mapboxgl.accessToken = 'YOUR_ACCESS_TOKEN';
-    map = new mapboxgl.Map({
+    map = new maplibregl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/dark-v10', // stylesheet location
+        style: 'https://api.maptiler.com/maps/basic-v2/style.json?key=' + mapTilerKey, // stylesheet location
         center: [35, 40], // starting position [lng, lat]
         zoom: 5 // starting zoom
     });
@@ -60,7 +61,7 @@ function addPointLayerToMap() {
 
         map.on('click', 'pointLayerId', function (e) {
 
-            const popup = new mapboxgl.Popup({closeButton: false})
+            const popup = new maplibregl.Popup({closeButton: false})
                     .setLngLat(e.lngLat)
                     .setHTML(e.features[0].properties.tipi)
                     .addTo(map);
@@ -98,7 +99,7 @@ function addLineLayerToMap() {
 
 
         map.on('click', 'lineLayerId', function (e) {
-            popup = new mapboxgl.Popup({closeButton: false})
+            popup = new maplibregl.Popup({closeButton: false})
                     .setLngLat(e.lngLat)
                     .setHTML(e.features[0].properties.adi)
                     .addTo(map);
@@ -199,7 +200,7 @@ function addPopulationPolygonLayerToMap() {
         this.map.addLayer(polygonLayer);
 
         map.on('click', 'populationPolygonLayerId', function (e) {
-            new mapboxgl.Popup()
+            new maplibregl.Popup()
                     .setLngLat(e.lngLat)
                     .setHTML(e.features[0].properties.il + " : " + e.features[0].properties.nufus)
                     .addTo(map);
@@ -261,11 +262,100 @@ function addPopulationPolygon3DLayerToMap() {
         this.map.addLayer(polygonLayer);
 
         map.on('click', 'populationPolygon3DLayerId', function (e) {
-            new mapboxgl.Popup()
+            new maplibregl.Popup()
                     .setLngLat(e.lngLat)
                     .setHTML(e.features[0].properties.il + " : " + e.features[0].properties.nufus)
                     .addTo(map);
         });
+    });
+}
+
+function addHeatmapLayerToMap() {
+
+    getGeojson("getPoints", (_result) => {
+
+        map.addSource("heatmapSourceId", {
+            'type': 'geojson',
+            'data': _result
+        });
+
+        let rainbow = new Rainbow();
+        rainbow.setNumberRange(1, 5);
+        rainbow.setSpectrum('yellow', 'red');
+
+        var heatmapLayer =
+                {
+                    'id': 'heatmapLayerId',
+                    'type': 'heatmap',
+                    'source': 'heatmapSourceId',
+                    'maxzoom': 9,
+                    'paint': {
+// Increase the heatmap weight based on frequency and property magnitude
+                        'heatmap-weight': [
+                            'interpolate',
+                            ['linear'],
+                            ['get', 'mag'],
+                            0,
+                            0,
+                            6,
+                            1
+                        ],
+// Increase the heatmap color weight weight by zoom level
+// heatmap-intensity is a multiplier on top of heatmap-weight
+                        'heatmap-intensity': [
+                            'interpolate',
+                            ['linear'],
+                            ['zoom'],
+                            0,
+                            1,
+                            9,
+                            3
+                        ],
+// Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+// Begin color ramp at 0-stop with a 0-transparancy color
+// to create a blur-like effect.
+                        'heatmap-color': [
+                            'interpolate',
+                            ['linear'],
+                            ['heatmap-density'],
+
+                            0,
+                            'rgba(0,0,0,0)',
+                            0.2,
+                            '#' + rainbow.colorAt(1),
+                            0.4,
+                            '#' + rainbow.colorAt(2),
+                            0.6,
+                            '#' + rainbow.colorAt(3),
+                            0.8,
+                            '#' + rainbow.colorAt(4),
+                            1,
+                            '#' + rainbow.colorAt(5)
+                        ],
+// Adjust the heatmap radius by zoom level
+                        'heatmap-radius': [
+                            'interpolate',
+                            ['linear'],
+                            ['zoom'],
+                            0,
+                            2,
+                            9,
+                            20
+                        ],
+// Transition from heatmap to circle layer by zoom level
+                        'heatmap-opacity': [
+                            'interpolate',
+                            ['linear'],
+                            ['zoom'],
+                            7,
+                            1,
+                            9,
+                            0
+                        ]
+                    }
+                }
+
+        this.map.addLayer(heatmapLayer);
     });
 }
 
@@ -319,8 +409,13 @@ function removeWmsLayerFromMap() {
     map.removeSource("wmsSourceId");
 }
 
+function removeHeatmapLayerFromMap() {
+    map.removeLayer("heatmapLayerId");
+    map.removeSource("heatmapSourceId");
+}
+
 function changeStyle(layerId) {
-    map.setStyle('mapbox://styles/mapbox/' + layerId);
+    map.setStyle('https://api.maptiler.com/maps/' + layerId + '/style.json?key=' + mapTilerKey);
 }
 
 function changeCircleLayerColor() {

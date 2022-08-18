@@ -9,8 +9,8 @@ and open the template in the editor.
         <title>GIS</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src='https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.js'></script>
-        <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.css' rel='stylesheet' />
+        <script src='https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js'></script>
+        <link href='https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css' rel='stylesheet' />
         <script src='rainbowvis.js'></script>
         <script src="index.js"></script>
 
@@ -25,11 +25,13 @@ and open the template in the editor.
             <button style="position: relative;z-index: 999" onclick="addPopulationPolygonLayerToMap();">Add Population Polygon Layer</button>
             <button style="position: relative;z-index: 999" onclick="addPopulationPolygon3DLayerToMap();">Add Population Polygon 3D Layer</button>
             <button style="position: relative;z-index: 999" onclick="addWmsLayerToMap();">Add Wms Layer</button>
+            <button style="position: relative;z-index: 999" onclick="addHeatmapLayerToMap();">Add Heatmap Layer</button>
+            
 
-            <button style="position: relative;z-index: 999;float: right" onclick="changeStyle('satellite-v9');">Satellite Style</button>
-            <button style="position: relative;z-index: 999;float: right" onclick="changeStyle('streets-v11');">Streets Style</button>
-            <button style="position: relative;z-index: 999;float: right" onclick="changeStyle('dark-v10');">Dark Style</button>
-            <button style="position: relative;z-index: 999;float: right" onclick="changeStyle('light-v10');">Light Style</button>
+            <button style="position: relative;z-index: 999;float: right" onclick="changeStyle('hybrid');">Satellite Hybrid</button>
+            <button style="position: relative;z-index: 999;float: right" onclick="changeStyle('outdoor');">Outdoor</button>
+            <button style="position: relative;z-index: 999;float: right" onclick="changeStyle('voyager');">Voyager</button>
+            <button style="position: relative;z-index: 999;float: right" onclick="changeStyle('basic-v2');">Basic</button>
 
             <p>
 
@@ -39,7 +41,8 @@ and open the template in the editor.
                 <button style="position: relative;z-index: 999" onclick="removePopulationPolygonLayerFromMap();">Remove Population Polygon Layer</button>
                 <button style="position: relative;z-index: 999" onclick="removePopulationPolygon3DLayerFromMap();">Remove Population Polygon 3D Layer</button>
                 <button style="position: relative;z-index: 999" onclick="removeWmsLayerFromMap();">Remove Wms Layer</button>
-
+                <button style="position: relative;z-index: 999" onclick="removeHeatmapLayerFromMap();">Remove Heatmap Layer</button>
+                
             <p>
 
                 <input style="position: relative;z-index: 999" type="text" id="color">
@@ -48,13 +51,13 @@ and open the template in the editor.
                 <input style="position: relative;z-index: 999" type="text" id="startColor">
                 <input style="position: relative;z-index: 999" type="text" id="endColor">
                 <button style="position: relative;z-index: 999" onclick="changePopulationPolygonLayerColor();">Change Population Color</button>
-                
+
             <p>
 
                 <input style="position: relative;z-index: 999" type="text" id="filter">
                 <button style="position: relative;z-index: 999" onclick="addFilterToCircleLayer();">Add Filter To Circle Layer</button>
                 <button style="position: relative;z-index: 999" onclick="removeFilterFromCircleLayer();">Remove Filter From Circle Layer</button>
-                
+
             </p>
         </div>
     </body>
