@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html style='width: 100%; height: 100%;'>
+    <head>
+        <title>Batuta Data Server Test</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <script src='https://unpkg.com/maplibre-gl@2.1.7/dist/maplibre-gl.js'></script>
+        <link href='https://unpkg.com/maplibre-gl@2.1.7/dist/maplibre-gl.css' rel='stylesheet' />
+    </head>
+    <body style='width: 100%; height: 100%;'>
+        <div id='map' style='width: 100%; height: 100%;'></div>
+        <script>
+            var map = new maplibregl.Map({
+                container: 'map',
+                style: 'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL',
+                center: [35, 40], // starting position [lng, lat]
+                zoom: 5 // starting zoom
+            });
+
+            map.on('load', function () {
+                map.addSource('mapillary-source', {
+                    'type': 'vector',
+                    'tiles': [
+                        "http://localhost:8080/geojsonserver/mvt/{z}/{x}/{y}.pbf?layername=poi"
+                    ],
+                    'minzoom': 0,
+                    'maxzoom': 14
+                });
+                map.addLayer(
+                        {
+                            'id': 'mapillary-layer',
+                            'type': 'circle',
+                            'source': 'mapillary-source',
+                            'source-layer': 'poi',
+                            'paint': {
+                                'circle-radius': 3,
+                                'circle-color': 'red'
+                            }
+                        });
+            });
+            map.addControl(new maplibregl.NavigationControl());
+        </script>
+    </body>
+</html>
