@@ -290,17 +290,7 @@ function addHeatmapLayerToMap() {
                     'source': 'heatmapSourceId',
                     'maxzoom': 9,
                     'paint': {
-// Increase the heatmap weight based on frequency and property magnitude
-                        'heatmap-weight': [
-                            'interpolate',
-                            ['linear'],
-                            ['get', 'mag'],
-                            0,
-                            0,
-                            6,
-                            1
-                        ],
-// Increase the heatmap color weight weight by zoom level
+// Increase the heatmap color weight by zoom level
 // heatmap-intensity is a multiplier on top of heatmap-weight
                         'heatmap-intensity': [
                             'interpolate',
@@ -379,6 +369,42 @@ function addWmsLayerToMap() {
     this.map.addLayer(wmsLayer);
 }
 
+
+function addMvtPointLayerToMap() {
+
+    map.addSource('mvtPointSourceId', {
+        'type': 'vector',
+        'tiles': [
+            "http://localhost:8080/geojsonserver/mvt/{z}/{x}/{y}.pbf?layername=poi"
+        ],
+        'minzoom': 0,
+        'maxzoom': 14
+    });
+
+    var mvtPointLayer = {
+        'id': 'mvtPointLayerId',
+        'type': 'circle',
+        'source': 'mvtPointSourceId',
+        'source-layer': 'poi',
+        'paint': {
+            'circle-radius': 3,
+            'circle-color': 'red'
+        }
+    };
+
+    this.map.addLayer(mvtPointLayer);
+
+    map.on('click', 'pointLayerId', function (e) {
+
+        const popup = new maplibregl.Popup({closeButton: false})
+                .setLngLat(e.lngLat)
+                .setHTML(e.features[0].properties.tipi)
+                .addTo(map);
+    });
+
+}
+;
+
 function removePointLayerFromMap() {
     map.removeLayer("pointLayerId");
     map.removeSource("pointSourceId");
@@ -412,6 +438,11 @@ function removeWmsLayerFromMap() {
 function removeHeatmapLayerFromMap() {
     map.removeLayer("heatmapLayerId");
     map.removeSource("heatmapSourceId");
+}
+
+function removeMvtPointLayerFromMap() {
+    map.removeLayer("mvtPointLayerId");
+    map.removeSource("mvtPointSourceId");
 }
 
 function changeStyle(layerId) {

@@ -33,7 +33,7 @@ public class MvtDao {
 
     public byte[] getPoints(int z, int x, int y, String layername) {
         String query = "select * from poi";
-        String attributes = "adi, mahalle";
+        String attributes = "adi, mahalle,tipi";
         return jdbcTemplate.queryForObject(String.format(mvtTemplate, z, x, y, attributes, query, z, x, y, layername), byte[].class);
     }
 
